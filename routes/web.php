@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\web\EventoController;
 use App\Http\Controllers\web\FotografiaController;
+use App\Http\Controllers\web\FotografoController;
+use App\Http\Controllers\web\PerfilController;
 use App\Http\Controllers\web\WelcomeController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,5 +21,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',[WelcomeController::class,'welcome'])->name('welcome');
-Route::get('/upload-create',[FotografiaController::class,'create'])->name('fotografia.create');
+Route::get('/upload-create',[FotografiaController::class,'create'])->middleware(['auth'])->name('fotografia.create');
 Route::post('/upload-create',[FotografiaController::class,'store'])->name('fotografia.store');
+
+//*******EVENTO */
+Route::get('/evento',[EventoController::class,'index'])->middleware(['auth'])->name('evento.index');
+Route::delete('/evento/{id}',[EventoController::class,'destroy'])->middleware(['auth'])->name('evento.destroy');
+Route::post('/evento-fotografos/{id}',[EventoController::class,'fotografosEvento'])->middleware(['auth'])->name('evento.fotografos');
+//*******FOTOGRAFIA */
+Route::get('/fotografia',[FotografiaController::class,'index'])->middleware(['auth'])->name('fotografia.index');
+Route::post('/fotografia',[FotografiaController::class,'store'])->middleware(['auth'])->name('fotografia.store');
+Route::get('/Perfil',[PerfilController::class,'index'])->middleware(['auth'])->name('perfil.index');
+//*******FOTOGRAFO */
+Route::get('fotografo',[FotografoController::class,'index'])->middleware(['auth'])->name('fotografo.index');
+
+Auth::routes();
+
+Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth'])->name('dashboard');
