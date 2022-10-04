@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[WelcomeController::class,'welcome'])->name('welcome');
 Route::get('/upload-create',[FotografiaController::class,'create'])->middleware(['auth'])->name('fotografia.create');
-Route::post('/upload-create',[FotografiaController::class,'store'])->name('fotografia.store');
+//Route::post('/upload-create',[FotografiaController::class,'store'])->name('fotografia.store');
 
 //*******EVENTO */
 Route::get('/evento',[EventoController::class,'index'])->middleware(['auth'])->name('evento.index');

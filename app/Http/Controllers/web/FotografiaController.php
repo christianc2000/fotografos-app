@@ -23,6 +23,7 @@ class FotografiaController extends Controller
     }
     public function store(Request $request)
     {
+       
         if ($request->hasFile('foto')) {
 
             // $uploadedFileUrl = Cloudinary::upload($request->file('foto')->getRealPath())->getSecurePath();
@@ -35,7 +36,9 @@ class FotografiaController extends Controller
                 'url' => $result->getPath(),
                 'fotografo_id' => 1,
             ]);
-            return $foto;
+            return redirect()->route('fotografia.index');
+        }else{
+            return "no entra";
         }
     }
 }

@@ -24,37 +24,48 @@
         </div>
 
 
+        <form action="{{ route('fotografia.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <x-adminlte-modal id="modalCustom" title="Account Policy" size="lg" theme="teal" icon="fas fa-bell"
+                v-centered static-backdrop scrollable>
 
-        <x-adminlte-modal id="modalCustom" title="Account Policy" size="lg" theme="teal" icon="fas fa-bell" v-centered
-            static-backdrop scrollable>
-            <div style="height:800px;">
+                <div style="height:800px;">
 
-                <input class="form-control my-2" type="file" id="foto" name="foto" accept="image/*">
-                <x-adminlte-select name="selVehicle" label="Evento" label-class="text-lightblue" igroup-size="lg">
-                    <x-slot name="prependSlot">
-                        <div class="input-group-text bg-gradient-info">
-                            <i class="fas fa-car-side"></i>
-                        </div>
-                    </x-slot>
-                    @foreach ($eventos as $evento)
-                        <option value="{{ $evento->evento->id}}">{{$evento->evento->titulo}}</option>
-                    @endforeach
+                    <input class="form-control my-2" type="file" id="foto" name="foto" accept="image/*">
+                    <x-adminlte-select name="selEvento" label="Evento" label-class="text-lightblue" igroup-size="lg">
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text bg-gradient-info">
+                                <i class="fas fa-car-side"></i>
+                            </div>
+                        </x-slot>
+                        @foreach ($eventos as $evento)
+                            <option value="{{ $evento->evento->id }}">{{ $evento->evento->titulo }}</option>
+                        @endforeach
+                        <!--  <button class="btn btn-success" type="submit">OK</button>-->
 
-                </x-adminlte-select>
-            </div>
-            <x-slot name="footerSlot">
-                <x-adminlte-button class="button mr-auto" theme="success" label="Accept" />
-                <x-adminlte-button theme="secondary" class="button-danger" label="Dismiss" data-dismiss="modal" />
-            </x-slot>
-        </x-adminlte-modal>
+                    </x-adminlte-select>
+
+                </div>
+
+                <x-slot name="footerSlot">
+
+                    <button type="submit" class="btn btn-success">Guardar</button>
+
+
+                    <x-adminlte-button theme="secondary" class="button-danger" label="Dismiss" data-dismiss="modal" />
+                </x-slot>
+
+            </x-adminlte-modal>
+        </form>
         {{-- Example button to open modal --}}
 
         @foreach ($fotografias as $foto)
-            <div class="col-md-4">
+            <div class="col col-md-4">
                 <x-adminlte-card theme="dark" theme-mode="outline" class="elevation-3" body-class="bg-gray-800"
                     footer-class="bg-gray-100 border-top rounded border-light">
 
-                    <img src="{{ $foto->url }}" alt="">
+                    <img src="{{ $foto->url }}" alt="" class="col"
+                        style="height: 100%; width: 300px; max-height: 300px">
                     <x-slot name="footerSlot">
                         <x-adminlte-button class="d-flex ml-auto" theme="light" label="submit" icon="fas fa-sign-in" />
                     </x-slot>
