@@ -314,7 +314,7 @@ return [
         [
             'text'        => 'Evento',
             'url'         => '/evento',
-            'icon'        => 'far fa-fw fa-file',
+            'icon'        => 'far fa-solid fa-calendar',
         ],
         [
             'text'        => 'Fotografía',

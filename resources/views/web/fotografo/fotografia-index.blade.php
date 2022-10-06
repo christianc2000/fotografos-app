@@ -17,57 +17,81 @@
             </x-adminlte-card> --}}
 
         <div class="col-md-4">
-            <x-adminlte-card theme="dark" theme-mode="outline">
-                <x-adminlte-button data-toggle="modal" data-target="#modalCustom" class="bg-teal w-full"
-                    icon="fa fa-solid fa-plus" />
+            <x-adminlte-card theme="dark" theme-mode="outline" style="height: 250px">
+                <button data-toggle="modal" data-target="#modalCustom" class="bg-teal button-modal" style="height: 100%;">
+                    <i class="fa fa-solid fa-plus fa-2x"></i> </button>
             </x-adminlte-card>
         </div>
 
 
-        <form action="{{ route('fotografia.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <x-adminlte-modal id="modalCustom" title="Account Policy" size="lg" theme="teal" icon="fas fa-bell"
-                v-centered static-backdrop scrollable>
 
-                <div style="height:800px;">
+        <x-adminlte-modal id="modalCustom" title="Subir Fotografía" size="xl" theme="teal" icon="fas fa-bell"
+            v-centered static-backdrop scrollable>
+            <form action="{{ route('fotografia.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div style="height:600px;">
 
                     <input class="form-control my-2" type="file" id="foto" name="foto" accept="image/*">
+
+                    <img id="imagenPrevisualizacion">
+
                     <x-adminlte-select name="selEvento" label="Evento" label-class="text-lightblue" igroup-size="lg">
                         <x-slot name="prependSlot">
                             <div class="input-group-text bg-gradient-info">
-                                <i class="fas fa-car-side"></i>
+                                <i class="fa fa-solid fa-calendar"></i>
                             </div>
                         </x-slot>
                         @foreach ($eventos as $evento)
                             <option value="{{ $evento->evento->id }}">{{ $evento->evento->titulo }}</option>
                         @endforeach
                         <!--  <button class="btn btn-success" type="submit">OK</button>-->
-
                     </x-adminlte-select>
+                    <x-adminlte-select name="selTipo" label="Tipo de Foto" label-class="text-lightblue" igroup-size="lg">
+                        <x-slot name="prependSlot">
+                            <div class="input-group-text bg-gradient-info">
+                                <i class="fa fa-solid fa-image"></i>
+                            </div>
+                        </x-slot>
+                           <option value=0>Privado</option>
+                            <option value=1>Pública</option>
+              
+                        <!--  <button class="btn btn-success" type="submit">OK</button>-->
+                    </x-adminlte-select>
+                    <label for="radio2" class="text-lightblue">Elegir estado de fotografía</label>
+                    <div class="row row-cols-6">
+                        <div class="col col-2">
+                            <input type="radio" name="radio" id="radio1" value=0/>
+                            <label for="radio1" class="text-bg-light rounded-1">Publicar</label>
+                        </div>
+                        <div class="col col-2">
+                            <input type="radio" name="radio" id="radio1" value=1/>
+                            <label for="radio2" class="text-bg-light rounded-1">Borrador</label>
+                        </div>
 
+                    </div>
                 </div>
 
                 <x-slot name="footerSlot">
 
                     <button type="submit" class="btn btn-success">Guardar</button>
 
+            </form>
 
-                    <x-adminlte-button theme="secondary" class="button-danger" label="Dismiss" data-dismiss="modal" />
-                </x-slot>
+            <x-adminlte-button theme="secondary" class="button-danger" label="Dismiss" data-dismiss="modal" />
+            </x-slot>
 
-            </x-adminlte-modal>
-        </form>
+        </x-adminlte-modal>
         {{-- Example button to open modal --}}
 
         @foreach ($fotografias as $foto)
             <div class="col col-md-4">
-                <x-adminlte-card theme="dark" theme-mode="outline" class="elevation-3" body-class="bg-gray-800"
+                <x-adminlte-card theme="dark" theme-mode="outline" class="elevation-3"
+                    style="height: 250px; align-items: center" body-class="bg-gray-800"
                     footer-class="bg-gray-100 border-top rounded border-light">
 
-                    <img src="{{ $foto->url }}" alt="" class="col"
-                        style="height: 100%; width: 300px; max-height: 300px">
+                    <img src="{{ $foto->url }}" alt="" class="col" style="height: 100%; width: auto;">
                     <x-slot name="footerSlot">
-                        <x-adminlte-button class="d-flex ml-auto" theme="light" label="submit" icon="fas fa-sign-in" />
+                        <x-adminlte-button class="d-flex ml-auto" theme="light" label="Editar" icon="fas fa-sign-in" />
                     </x-slot>
                 </x-adminlte-card>
                 {{--  <x-adminlte-card theme="dark" theme-mode="outline">
@@ -110,6 +134,21 @@
             border-radius: 8px;
             height: 50px;
         }
+
+        .button-modal {
+            background-color: #258d25;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 8px;
+            height: 100%;
+            width: 100%;
+        }
     </style>
 @stop
 
@@ -119,28 +158,28 @@
     </script>
     <script>
         $(document).ready(function() {
+            // Obtener referencia al input y a la imagen
 
-            let iBox = new _AdminLTE_InfoBox('ibUpdatable');
+            const $seleccionArchivos = document.querySelector("#foto"),
+                $imagenPrevisualizacion = document.querySelector("#imagenPrevisualizacion");
 
-            let updateIBox = () => {
-                // Update data.
-                let rep = Math.floor(1000 * Math.random());
-                let idx = rep < 100 ? 0 : (rep > 500 ? 2 : 1);
-                let progress = Math.round(rep * 100 / 1000);
-                let text = rep + '/1000';
-                let icon = 'fas fa-lg fa-medal ' + ['text-primary', 'text-light', 'text-warning'][idx];
-                let description = progress + '% reputation completed to reach next level';
-
-                let data = {
-                    text,
-                    icon,
-                    description,
-                    progress
-                };
-                iBox.update(data);
-            };
-
-            setInterval(updateIBox, 5000);
-        })
+            // Escuchar cuando cambie
+            $seleccionArchivos.addEventListener("change", () => {
+                // Los archivos seleccionados, pueden ser muchos o uno
+                const archivos = $seleccionArchivos.files;
+                // Si no hay archivos salimos de la función y quitamos la imagen
+                if (!archivos || !archivos.length) {
+                    $imagenPrevisualizacion.src = "";
+                    return;
+                }
+                // Ahora tomamos el primer archivo, el cual vamos a previsualizar
+                const primerArchivo = archivos[0];
+                // Lo convertimos a un objeto de tipo objectURL
+                const objectURL = URL.createObjectURL(primerArchivo);
+                // Y a la fuente de la imagen le ponemos el objectURL
+                $imagenPrevisualizacion.src = objectURL;
+                $('#imagenPrevisualizacion').width(200);
+            });
+        });
     </script>
 @stop
