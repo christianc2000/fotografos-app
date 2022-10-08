@@ -7,7 +7,11 @@ use App\Models\Fotografo;
 use App\Models\Fotografía;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
-use Image;
+use Intervention\Image\Image;
+// import the Intervention Image Manager Class
+use Intervention\Image\ImageManager;
+
+
 
 class FotografiaController extends Controller
 {
@@ -30,7 +34,8 @@ class FotografiaController extends Controller
             // $uploadedFileUrl = Cloudinary::upload($request->file('foto')->getRealPath())->getSecurePath();
 
             $result = $request->foto->storeOnCloudinary();
-           // $img = Image::make($result->getWidth())->resize(300, 200);
+            $img = Image::make($result->getPath())->resize(300, 200);
+            return $img; 
             $foto = Fotografía::create([
                 'dimension' => $result->getWidth() . 'x' . $result->getHeight(),
                 'tipo' => true,
