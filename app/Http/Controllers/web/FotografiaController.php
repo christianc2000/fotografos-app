@@ -7,6 +7,7 @@ use App\Models\Fotografo;
 use App\Models\Fotografía;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
+use Image;
 
 class FotografiaController extends Controller
 {
@@ -29,13 +30,14 @@ class FotografiaController extends Controller
             // $uploadedFileUrl = Cloudinary::upload($request->file('foto')->getRealPath())->getSecurePath();
 
             $result = $request->foto->storeOnCloudinary();
-
+           
             $foto = Fotografía::create([
                 'dimension' => $result->getWidth() . 'x' . $result->getHeight(),
                 'tipo' => true,
                 'url' => $result->getPath(),
                 'fotografo_id' => 1,
             ]);
+            return "retorna la imagen";
             return redirect()->route('fotografia.index');
         }else{
             return "no entra";
