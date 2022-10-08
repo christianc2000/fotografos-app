@@ -30,7 +30,7 @@ class FotografiaController extends Controller
             // $uploadedFileUrl = Cloudinary::upload($request->file('foto')->getRealPath())->getSecurePath();
 
             $result = $request->foto->storeOnCloudinary();
-            $img = Image::make($result->getWidth())->resize(300, 200);
+           // $img = Image::make($result->getWidth())->resize(300, 200);
             $foto = Fotografía::create([
                 'dimension' => $result->getWidth() . 'x' . $result->getHeight(),
                 'tipo' => true,
