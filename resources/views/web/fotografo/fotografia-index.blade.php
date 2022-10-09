@@ -32,7 +32,10 @@
                 <div style="height:600px;">
 
                     <input class="form-control my-2" type="file" id="foto" name="foto" accept="image/*">
-
+                    @error('foto')
+                        <br>
+                        <small>{{ $message }} </small>
+                    @enderror
                     <img id="imagenPrevisualizacion">
 
                     <x-adminlte-select name="evento_id" label="Evento" label-class="text-lightblue" igroup-size="lg">
@@ -60,7 +63,7 @@
                     <label for="radio2" class="text-lightblue">Elegir estado de fotografía</label>
                     <div class="row row-cols-6">
                         <div class="col col-2">
-                            <input type="radio" name="publicado" id="radio1" value=1 checked/>
+                            <input type="radio" name="publicado" id="radio1" value=1 checked />
                             <label for="radio1" class="text-bg-light rounded-1">Publicar</label>
                         </div>
                         <div class="col col-2">
