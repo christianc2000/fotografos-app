@@ -8,10 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Evento extends Model
 {
     use HasFactory;
-    protected $fillable=['titulo','descripcion','tipo','fecha','hora','direccion','gps'];
+    protected $fillable = ['titulo', 'descripcion', 'tipo', 'fecha', 'hora', 'direccion', 'gps'];
 
     //relacion de 1 a muchos
-    public function eventoFotografos(){
+    public function eventoFotografos()
+    {
         return $this->hasMany(EventoFotografo::class);
+    }
+    public function fotoaguas()
+    {
+        return $this->hasMany(FotoAgua::class);
     }
 }

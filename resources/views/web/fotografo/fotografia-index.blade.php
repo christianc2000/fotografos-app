@@ -89,7 +89,7 @@
                     style="height: 250px; align-items: center" body-class="bg-gray-800"
                     footer-class="bg-gray-100 border-top rounded border-light">
 
-                    <img src="{{ $foto->url }}" alt="" class="col fotografia" style="height: 100%; width: auto;">
+                    <img src="{{ $foto->url }}" alt="" class="col" style="height: 100%; width: auto;">
                     <x-slot name="footerSlot">
                         <x-adminlte-button class="d-flex ml-auto" theme="light" label="Editar" icon="fas fa-sign-in" />
                     </x-slot>
@@ -153,20 +153,16 @@
 @stop
 
 @section('js')
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://res.cloudinary.com/<doxlbgstv>/image/fetch/"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
     <script>
         console.log('Hi!');
     </script>
     <script>
         $(document).ready(function() {
             console.log("hola mundo");
-            $(".fotografia").each(function(){
-                //console.log("entra for");
-        	    url=$(this).attr('src');
-                new CloudinaryImage(url).delivery(quality(20));
-        	});
-            
+
+
             //cloudinary.url().transformation(new Transformation().quality(60)).imageTag(url);
 
             // Obtener referencia al input y a la imagen

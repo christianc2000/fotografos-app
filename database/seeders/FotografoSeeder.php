@@ -14,17 +14,18 @@ class FotografoSeeder extends Seeder
      */
     public function run()
     {
-        $fotografos=[
+        $fotografos = [
             [
-                'biografia'=>'Realizo trabajos como fotografo profesional desde hace mas de 3 años, realizé talleres con fotografos de la serie de vuelta al barrio',
+                'biografia' => 'Realizo trabajos como fotografo profesional desde hace mas de 3 años, realizé talleres con fotografos de la serie de vuelta al barrio',
+                'user_id' => 1
             ],
             [
-                'biografia'=>'Con experiencia en eventos del gobierno durante 5 años, y también en spot de Coca Cola'
+                'biografia' => 'Con experiencia en eventos del gobierno durante 5 años, y también en spot de Coca Cola',
+                'user_id' => 2
             ],
         ];
         foreach ($fotografos as $fotografo) {
             Fotografo::create($fotografo);
         }
     }
-
 }

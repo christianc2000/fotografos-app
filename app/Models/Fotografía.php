@@ -8,12 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Fotografía extends Model
 {
     use HasFactory;
-    protected $fillable=['dimension','tipo','url','fotografo_id'];
+    protected $fillable=['dimension','tipo','url','publicado','fotografo_id'];
  //relación de 1 a muchos
  
     //relación de 1 a muchos 
     public function etiquetaFotografias(){
         return $this->hasMany(EtiquetaFotografía::class);
+    }
+    public function fotoagua(){
+        return $this->hasOne(FotoAgua::class);
     }
     //relación inversa de 1 a muchos
     public function fotografo(){

@@ -8,11 +8,16 @@ use App\Models\Fotografía;
 use Cloudinary\Asset\File;
 use Cloudinary\Tag\ImageTag;
 use Cloudinary\Transformation\Delivery;
+use Cloudinary\Transformation\Effect;
+use Cloudinary\Transformation\Overlay;
+use Cloudinary\Transformation\Resize;
+use Cloudinary\Transformation\Source;
+use Cloudinary\Transformation\Transformation;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
-use Intervention\Image\File as ImageFile;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 // import the Intervention Image Manager Class
 //use Intervention\Image\ImageManager;
 
@@ -22,7 +27,8 @@ class FotografiaController extends Controller
 {
     public function index()
     {
-        $fotografo = Fotografo::all()->first(); //cambiar por el fotografo loggueado
+        $user=Auth::user();
+        $fotografo = Fotografo::findOrFail($user->fotografo->id); //cambiar por el fotografo loggueado
         $fotografias = $fotografo->fotografias;
         $eventos = $fotografo->eventoFotografos;
         return view('web.fotografo.fotografia-index', compact('fotografias', 'eventos'));
@@ -36,23 +42,28 @@ class FotografiaController extends Controller
 
         if ($request->hasFile('foto')) {
 
-            // $uploadedFileUrl = Cloudinary::upload($request->file('foto')->getRealPath())->getSecurePath();
+            //       $uploadedFileUrl = Cloudinary::upload($request->file('foto')->getRealPath())->getSecurePath();
 
             $result = $request->foto->storeOnCloudinary();
-
-           /* $img = (new ImageTag($result->getPath()))
-                ->delivery(Delivery::quality(30));
-            
-              return $img;
-*/
-            // indicar la imagen para la marca de agua y la posición
-            /* $image->insert(public_path('images/logo.png'), 'bottom-right');
-            $image->save(public_path('images/' . $name));
-            return redirect()->route('watermark-image-form')->with(['image' => $name]);*/
             $foto = Fotografía::create([
                 'dimension' => $result->getWidth() . 'x' . $result->getHeight(),
                 'tipo' => true,
                 'url' => $result->getPath(),
+                'fotografo_id' => 1,
+            ]);
+            $resultagua = cloudinary()->upload($request->file('foto')->getRealPath(), [
+                'resource_type' => 'image',
+                'transformation' => array(
+                    array('width'=>200,'crop' => 'fit', 'effect'=> "blur:100"),
+                    array('overlay' => 'marca-agua-4_ms8m0f', 'width'=> 200,'crop'=> "scale", 
+                    'opacity'=> 70)
+                )
+            ]);
+           
+            $foto = Fotografía::create([
+                'dimension' => $resultagua->getWidth() . 'x' . $resultagua->getHeight(),
+                'tipo' => true,
+                'url' => $resultagua->getPath(),
                 'fotografo_id' => 1,
             ]);
 

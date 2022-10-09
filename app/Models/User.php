@@ -41,4 +41,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    //relacion de 0 a 1
+    public function fotografo()
+    {
+        return $this->hasOne(Fotografo::class);
+    }
 }

@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FotografoSeeder::class);
         $this->call(EventoFotografoSeeder::class);
         $this->call(FotografíaSeeder::class);
+        $this->call(FotoAguaSeeder::class);
     }
 }
