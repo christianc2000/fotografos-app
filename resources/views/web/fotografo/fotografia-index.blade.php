@@ -153,15 +153,18 @@
 @stop
 
 @section('js')
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://res.cloudinary.com/<doxlbgstv>/image/fetch/"></script>
     <script>
         console.log('Hi!');
     </script>
     <script>
         $(document).ready(function() {
             console.log("hola mundo");
-            $("#fotografia").each(function(){
-                console.log("entra for");
-        	    alert($(this).attr('src'));
+            $(".fotografia").each(function(){
+                //console.log("entra for");
+        	    url=$(this).attr('src');
+                new CloudinaryImage(url).delivery(quality(20));
         	});
             
             //cloudinary.url().transformation(new Transformation().quality(60)).imageTag(url);
