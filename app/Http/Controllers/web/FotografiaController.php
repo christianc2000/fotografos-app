@@ -48,11 +48,9 @@ class FotografiaController extends Controller
             'publicado' => 'required|boolean',
             'tipo' => 'required|boolean',
         ]);
-        return $request->all();
+
         if ($request->hasFile('foto')) {
-
             //       $uploadedFileUrl = Cloudinary::upload($request->file('foto')->getRealPath())->getSecurePath();
-
             $result = $request->foto->storeOnCloudinary();
             $foto = Fotografía::create([
                 'dimension' => $result->getWidth() . 'x' . $result->getHeight(),

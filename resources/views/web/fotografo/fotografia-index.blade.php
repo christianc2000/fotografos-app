@@ -7,7 +7,13 @@
 @stop
 
 @section('content')
-    <p>Crud Fotografía</p>
+
+    @error('foto')
+        <div class="alert alert-danger">
+            <small>{{ $message }} </small>
+        </div>
+    @enderror
+
     <div class="row">
 
         {{-- <x-adminlte-card theme="dark" theme-mode="outline">
@@ -32,10 +38,7 @@
                 <div style="height:600px;">
 
                     <input class="form-control my-2" type="file" id="foto" name="foto" accept="image/*">
-                    @error('foto')
-                        <br>
-                        <small>{{ $message }} </small>
-                    @enderror
+
                     <img id="imagenPrevisualizacion">
 
                     <x-adminlte-select name="evento_id" label="Evento" label-class="text-lightblue" igroup-size="lg">
