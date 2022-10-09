@@ -22,6 +22,7 @@ class CreateEventosTable extends Migration
             $table->time('hora');
             $table->string('direccion');
             $table->string('gps');
+            $table->boolean('estado');
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
+use App\Models\FotoAgua;
 use App\Models\Fotografo;
 use App\Models\Fotografía;
 use Cloudinary\Asset\File;
@@ -27,10 +28,11 @@ class FotografiaController extends Controller
 {
     public function index()
     {
-        $user=Auth::user();
+        $user = Auth::user();
         $fotografo = Fotografo::findOrFail($user->fotografo->id); //cambiar por el fotografo loggueado
         $fotografias = $fotografo->fotografias;
         $eventos = $fotografo->eventoFotografos;
+
         return view('web.fotografo.fotografia-index', compact('fotografias', 'eventos'));
     }
     public function create()
@@ -40,6 +42,13 @@ class FotografiaController extends Controller
     public function store(Request $request)
     {
 
+        $request->validate([
+            'evento_id' => 'required|exists:eventos,id',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
+            'publicado' => 'required|boolean',
+            'tipo' => 'required|boolean',
+        ]);
+        return $request->all();
         if ($request->hasFile('foto')) {
 
             //       $uploadedFileUrl = Cloudinary::upload($request->file('foto')->getRealPath())->getSecurePath();
@@ -49,22 +58,25 @@ class FotografiaController extends Controller
                 'dimension' => $result->getWidth() . 'x' . $result->getHeight(),
                 'tipo' => true,
                 'url' => $result->getPath(),
-                'fotografo_id' => 1,
+                'publicado' => true,
+                'fotografo_id' => Auth::user()->id,
             ]);
             $resultagua = cloudinary()->upload($request->file('foto')->getRealPath(), [
                 'resource_type' => 'image',
                 'transformation' => array(
-                    array('width'=>200,'crop' => 'fit', 'effect'=> "blur:100"),
-                    array('overlay' => 'marca-agua-4_ms8m0f', 'width'=> 200,'crop'=> "scale", 
-                    'opacity'=> 70)
+                    array('width' => 200, 'crop' => 'fit', 'effect' => "blur:100"),
+                    array(
+                        'overlay' => 'marca-agua-4_ms8m0f', 'width' => 200, 'crop' => "scale",
+                        'opacity' => 70
+                    )
                 )
             ]);
-           
-            $foto = Fotografía::create([
+
+            FotoAgua::create([
                 'dimension' => $resultagua->getWidth() . 'x' . $resultagua->getHeight(),
-                'tipo' => true,
                 'url' => $resultagua->getPath(),
-                'fotografo_id' => 1,
+                'fotografía_id' => $foto->id,
+                'evento_id' => $request->evento->id
             ]);
 
             return redirect()->route('fotografia.index');

@@ -35,7 +35,7 @@
 
                     <img id="imagenPrevisualizacion">
 
-                    <x-adminlte-select name="selEvento" label="Evento" label-class="text-lightblue" igroup-size="lg">
+                    <x-adminlte-select name="evento_id" label="Evento" label-class="text-lightblue" igroup-size="lg">
                         <x-slot name="prependSlot">
                             <div class="input-group-text bg-gradient-info">
                                 <i class="fa fa-solid fa-calendar"></i>
@@ -46,7 +46,7 @@
                         @endforeach
                         <!--  <button class="btn btn-success" type="submit">OK</button>-->
                     </x-adminlte-select>
-                    <x-adminlte-select name="selTipo" label="Tipo de Foto" label-class="text-lightblue" igroup-size="lg">
+                    <x-adminlte-select name="tipo" label="Tipo de Foto" label-class="text-lightblue" igroup-size="lg">
                         <x-slot name="prependSlot">
                             <div class="input-group-text bg-gradient-info">
                                 <i class="fa fa-solid fa-image"></i>
@@ -60,11 +60,11 @@
                     <label for="radio2" class="text-lightblue">Elegir estado de fotografía</label>
                     <div class="row row-cols-6">
                         <div class="col col-2">
-                            <input type="radio" name="radio" id="radio1" value=0 />
+                            <input type="radio" name="publicado" id="radio1" value=1 checked/>
                             <label for="radio1" class="text-bg-light rounded-1">Publicar</label>
                         </div>
                         <div class="col col-2">
-                            <input type="radio" name="radio" id="radio1" value=1 />
+                            <input type="radio" name="publicado" id="radio1" value=0 />
                             <label for="radio2" class="text-bg-light rounded-1">Borrador</label>
                         </div>
 

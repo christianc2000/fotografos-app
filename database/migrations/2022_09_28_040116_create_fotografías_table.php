@@ -18,7 +18,7 @@ class CreateFotografíasTable extends Migration
             $table->string('dimension');
             $table->boolean('tipo');//true=privado, false=publico;
             $table->string('url');
-            $table->boolena('publicado');//si la foto se publica o estará en borrador
+            $table->boolean('publicado');//si la foto se publica o estará en borrador
             $table->foreignId('fotografo_id');
             $table->timestamps();
         });

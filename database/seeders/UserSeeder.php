@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::create(
+        $users = [
             [
                 'name' => 'Christian',
                 'email' => 'christian@gmail.com',
@@ -25,6 +25,9 @@ class UserSeeder extends Seeder
                 'email' => 'fotoajax@gmail.com',
                 'password' => bcrypt('12345678')
             ]
-        );
+        ];
+        foreach ($users as $user) {
+            User::create($user);
+        }
     }
 }
