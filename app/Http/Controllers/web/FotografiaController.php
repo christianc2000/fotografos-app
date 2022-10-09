@@ -6,19 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\FotoAgua;
 use App\Models\Fotografo;
 use App\Models\Fotografía;
-use Cloudinary\Asset\File;
-use Cloudinary\Tag\ImageTag;
-use Cloudinary\Transformation\Delivery;
-use Cloudinary\Transformation\Effect;
-use Cloudinary\Transformation\Overlay;
-use Cloudinary\Transformation\Resize;
-use Cloudinary\Transformation\Source;
-use Cloudinary\Transformation\Transformation;
+
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Intervention\Image\Facades\Image;
 // import the Intervention Image Manager Class
 //use Intervention\Image\ImageManager;
 
@@ -59,6 +51,7 @@ class FotografiaController extends Controller
                 'publicado' => true,
                 'fotografo_id' => Auth::user()->id,
             ]);
+            
             $resultagua = cloudinary()->upload($request->file('foto')->getRealPath(), [
                 'resource_type' => 'image',
                 'transformation' => array(
@@ -69,7 +62,7 @@ class FotografiaController extends Controller
                     )
                 )
             ]);
-
+           // return $resultagua->getWidth();
             FotoAgua::create([
                 'dimension' => $resultagua->getWidth() . 'x' . $resultagua->getHeight(),
                 'url' => $resultagua->getPath(),

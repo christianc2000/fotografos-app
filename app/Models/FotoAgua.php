@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class FotoAgua extends Model
 {
     use HasFactory;
-    protected $fillable = ['dimension', 'fotografía_id', 'evento_id'];
+    protected $fillable = ['dimension','url','fotografía_id', 'evento_id'];
 
     public function evento()
     {

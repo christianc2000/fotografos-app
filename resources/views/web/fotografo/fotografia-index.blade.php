@@ -160,7 +160,7 @@
 
 @section('js')
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+   
     <script>
         console.log('Hi!');
     </script>
