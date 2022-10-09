@@ -52,19 +52,19 @@
                                 <i class="fa fa-solid fa-image"></i>
                             </div>
                         </x-slot>
-                           <option value=0>Privado</option>
-                            <option value=1>Pública</option>
-              
+                        <option value=0>Privado</option>
+                        <option value=1>Pública</option>
+
                         <!--  <button class="btn btn-success" type="submit">OK</button>-->
                     </x-adminlte-select>
                     <label for="radio2" class="text-lightblue">Elegir estado de fotografía</label>
                     <div class="row row-cols-6">
                         <div class="col col-2">
-                            <input type="radio" name="radio" id="radio1" value=0/>
+                            <input type="radio" name="radio" id="radio1" value=0 />
                             <label for="radio1" class="text-bg-light rounded-1">Publicar</label>
                         </div>
                         <div class="col col-2">
-                            <input type="radio" name="radio" id="radio1" value=1/>
+                            <input type="radio" name="radio" id="radio1" value=1 />
                             <label for="radio2" class="text-bg-light rounded-1">Borrador</label>
                         </div>
 
@@ -89,7 +89,7 @@
                     style="height: 250px; align-items: center" body-class="bg-gray-800"
                     footer-class="bg-gray-100 border-top rounded border-light">
 
-                    <img src="{{ $foto->url }}" alt="" class="col" style="height: 100%; width: auto;">
+                    <img src="{{ $foto->url }}" alt="" class="col fotografia" style="height: 100%; width: auto;">
                     <x-slot name="footerSlot">
                         <x-adminlte-button class="d-flex ml-auto" theme="light" label="Editar" icon="fas fa-sign-in" />
                     </x-slot>
@@ -158,6 +158,10 @@
     </script>
     <script>
         $(document).ready(function() {
+            url=$("#fotografia").attr('src');
+            console.log("url de imagenes: "+url);
+            //cloudinary.url().transformation(new Transformation().quality(60)).imageTag(url);
+
             // Obtener referencia al input y a la imagen
 
             const $seleccionArchivos = document.querySelector("#foto"),

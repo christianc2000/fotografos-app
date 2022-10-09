@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Fotografo;
 use App\Models\Fotografía;
 use Cloudinary\Asset\File;
+use Cloudinary\Tag\ImageTag;
+use Cloudinary\Transformation\Delivery;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
@@ -37,12 +39,14 @@ class FotografiaController extends Controller
             // $uploadedFileUrl = Cloudinary::upload($request->file('foto')->getRealPath())->getSecurePath();
 
             $result = $request->foto->storeOnCloudinary();
-            $img = Image::make($request->foto);
-            $img->resize(200, null);
-            $imgdirect=$img->storeOnCloudinary();
-            return $imgdirect->getPath();
+
+           /* $img = (new ImageTag($result->getPath()))
+                ->delivery(Delivery::quality(30));
+            
+              return $img;
+*/
             // indicar la imagen para la marca de agua y la posición
-           /* $image->insert(public_path('images/logo.png'), 'bottom-right');
+            /* $image->insert(public_path('images/logo.png'), 'bottom-right');
             $image->save(public_path('images/' . $name));
             return redirect()->route('watermark-image-form')->with(['image' => $name]);*/
             $foto = Fotografía::create([
