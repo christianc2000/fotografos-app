@@ -158,8 +158,12 @@
     </script>
     <script>
         $(document).ready(function() {
-            url=$("#fotografia").attr('src');
-            console.log("url de imagenes: "+url);
+            console.log("hola mundo");
+            $("#fotografia").each(function(){
+                console.log("entra for");
+        	    alert($(this).attr('src'));
+        	});
+            
             //cloudinary.url().transformation(new Transformation().quality(60)).imageTag(url);
 
             // Obtener referencia al input y a la imagen
