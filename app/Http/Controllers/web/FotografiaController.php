@@ -5,8 +5,11 @@ namespace App\Http\Controllers\web;
 use App\Http\Controllers\Controller;
 use App\Models\Fotografo;
 use App\Models\Fotografía;
+use Cloudinary\Asset\File;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
+use Intervention\Image\File as ImageFile;
 
 // import the Intervention Image Manager Class
 //use Intervention\Image\ImageManager;
@@ -17,7 +20,7 @@ class FotografiaController extends Controller
 {
     public function index()
     {
-        $fotografo = Fotografo::all()->first();//cambiar por el fotografo loggueado
+        $fotografo = Fotografo::all()->first(); //cambiar por el fotografo loggueado
         $fotografias = $fotografo->fotografias;
         $eventos = $fotografo->eventoFotografos;
         return view('web.fotografo.fotografia-index', compact('fotografias', 'eventos'));
@@ -28,23 +31,29 @@ class FotografiaController extends Controller
     }
     public function store(Request $request)
     {
-       
+
         if ($request->hasFile('foto')) {
 
             // $uploadedFileUrl = Cloudinary::upload($request->file('foto')->getRealPath())->getSecurePath();
 
             $result = $request->foto->storeOnCloudinary();
-            $imgreduct=imagejpeg($request->foto, null, 20);
-            $resultimgreduct=$request->foto->storeOnCloudinary();
+            $img = Image::make($request->foto);
+            $img->resize(200, null);
+            $imgdirect=$img->storeOnCloudinary();
+            return $imgdirect->getPath();
+            // indicar la imagen para la marca de agua y la posición
+           /* $image->insert(public_path('images/logo.png'), 'bottom-right');
+            $image->save(public_path('images/' . $name));
+            return redirect()->route('watermark-image-form')->with(['image' => $name]);*/
             $foto = Fotografía::create([
                 'dimension' => $result->getWidth() . 'x' . $result->getHeight(),
                 'tipo' => true,
                 'url' => $result->getPath(),
                 'fotografo_id' => 1,
             ]);
-            return $resultimgreduct->getPath();
+
             return redirect()->route('fotografia.index');
-        }else{
+        } else {
             return "no entra";
         }
     }
