@@ -74,7 +74,7 @@ class FotografiaController extends Controller
                 'dimension' => $resultagua->getWidth() . 'x' . $resultagua->getHeight(),
                 'url' => $resultagua->getPath(),
                 'fotografía_id' => $foto->id,
-                'evento_id' => $request->evento->id
+                'evento_id' => $request->evento_id
             ]);
 
             return redirect()->route('fotografia.index');
