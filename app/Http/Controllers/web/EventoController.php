@@ -117,7 +117,8 @@ class EventoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $evento=Evento::findOrFail($id);
+        return view('web.organizador.evento-edit',compact('evento'));
     }
 
     /**
