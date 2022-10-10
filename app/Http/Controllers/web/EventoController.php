@@ -5,6 +5,7 @@ namespace App\Http\Controllers\web;
 use App\Http\Controllers\Controller;
 use App\Models\Evento;
 use App\Models\Fotografo;
+use App\Models\Organizador;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,10 +19,19 @@ class EventoController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $fotografo = Fotografo::findOrFail($user->fotografo->id);
-        $eventos = $fotografo->eventoFotografos;
-
-        return view('web.organizador.evento-index', compact('eventos'));
+        if ($user->tipo == "O") {
+            $organizador = Organizador::findOrFail($user->organizador->id);
+            $eventos = $organizador->eventos;
+            
+            return view('web.organizador.evento-index', compact('eventos'));
+        } else if ($user->tipo == "F") {
+            $fotografo = Fotografo::findOrFail($user->fotografo->id);
+            $eventos = $fotografo->eventoFotografos;
+            return view('web.organizador.evento-index', compact('eventos'));
+        }else{
+            return "Error no tiene autorización";
+        }
+       
     }
 
     /**
@@ -41,8 +51,10 @@ class EventoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
+
         $request->validate([
             "titulo" => "required|string|max:30",
             "gps" => "required",
@@ -50,24 +62,20 @@ class EventoController extends Controller
             "descripcion" => "required|string",
             "tipo" => "required|string|max:1",
             "fecha" => "required",
+            "hora" => "required"
         ]);
-//  return $request->all();
- //       return $request->all();
-        $fechaActual = date('d-m-Y');
-        $timeActual= date("G:i");
-        if ($fechaActual > $request->fecha) {
-            return "se paso de la fecha";
-        } else {
-            if ($timeActual>$request->hora){
-                return "Se paso de la fecha y hora";
-            }else{
-                return "no se paso";
-            }
-           
-        }
-        return "no entra if";
-        $evento = new Evento();
 
+
+        function checkThePast($time)
+        {
+            $convertToUNIXtime = strtotime($time);
+
+            return $convertToUNIXtime < time();
+        }
+        $fechaevento = $request->fecha . " " . $request->hora;
+
+
+        $evento = new Evento();
 
         $evento->titulo = $request->titulo;
         $evento->descripcion = $request->descripcion;
@@ -77,14 +85,16 @@ class EventoController extends Controller
             $evento->tipo = false;
         }
 
-        $evento->fecha = $request->fecha;
-        $evento->hora = $request->hora;
+        $evento->fecha = $fechaevento;
         $evento->direccion = $request->direccion;
         $evento->gps = $request->gps;
-       
-        $evento->estado = true;
-
-
+        if (checkThePast($fechaevento)) {
+            $evento->estado = false;
+        } else {
+            $evento->estado = true;
+        }
+        $evento->organizador_id=Auth::user()->organizador->id;
+        $evento->save();
         return redirect()->route('evento.index');
     }
 

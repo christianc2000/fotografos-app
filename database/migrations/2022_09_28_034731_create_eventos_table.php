@@ -22,6 +22,7 @@ class CreateEventosTable extends Migration
             $table->string('direccion');
             $table->string('gps');
             $table->boolean('estado');
+            $table->foreignId('organizador_id');
             $table->timestamps();
         });
     }

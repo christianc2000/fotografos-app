@@ -18,12 +18,20 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Christian',
                 'email' => 'christian@gmail.com',
-                'password' => bcrypt('12345678')
+                'password' => bcrypt('12345678'),
+                'tipo' => 'F'
             ],
             [
                 'name' => 'Fotoajax',
                 'email' => 'fotoajax@gmail.com',
-                'password' => bcrypt('12345678')
+                'password' => bcrypt('12345678'),
+                'tipo' => 'F'
+            ],
+            [
+                'name' => 'Organizador',
+                'email' => 'organizador@gmail.com',
+                'password' => bcrypt('12345678'),
+                'tipo' => 'O'
             ]
         ];
         foreach ($users as $user) {

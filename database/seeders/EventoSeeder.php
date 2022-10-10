@@ -22,7 +22,8 @@ class EventoSeeder extends Seeder
                 'fecha'=>'2022-09-11 20:00:00',
                 'direccion'=>'Casco viejo, primer anillo',
                 'gps'=>'-17.7821,-63.1748',
-                'estado'=>true
+                'estado'=>true,
+                'organizador_id'=>1
             ],
             [
                 'titulo'=>'Cabildo Cruceño',
@@ -31,7 +32,8 @@ class EventoSeeder extends Seeder
                 'fecha'=>'2022-09-30 17:00:00',
                 'direccion'=>'Cristo Redentos, segundo anillo',
                 'gps'=>'-17.77042,-63.18256',
-                'estado'=>true
+                'estado'=>true,
+                'organizador_id'=>1
             ],
         ];
         foreach ($eventos as $evento) {

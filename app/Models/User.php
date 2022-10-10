@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'tipo'
     ];
 
     /**
@@ -45,5 +46,9 @@ class User extends Authenticatable
     public function fotografo()
     {
         return $this->hasOne(Fotografo::class);
+    }
+    public function organizador()
+    {
+        return $this->hasOne(Organizador::class);
     }
 }
