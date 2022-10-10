@@ -19,8 +19,7 @@ class EventoSeeder extends Seeder
                 'titulo'=>'Elección Reina Carnaval 2023',
                 'descripcion'=>'Se realiza el evento para coronar a la representante del proximo carnaval',
                 'tipo'=>false,
-                'fecha'=>'2022-09-11',
-                'hora'=>'20:00:00',
+                'fecha'=>'2022-09-11 20:00:00',
                 'direccion'=>'Casco viejo, primer anillo',
                 'gps'=>'-17.7821,-63.1748',
                 'estado'=>true
@@ -29,8 +28,7 @@ class EventoSeeder extends Seeder
                 'titulo'=>'Cabildo Cruceño',
                 'descripcion'=>'Se realiza el evento para definir el accionar para presionar el censo en el 2023',
                 'tipo'=>false,
-                'fecha'=>'2022-09-30',
-                'hora'=>'17:00:00',
+                'fecha'=>'2022-09-30 17:00:00',
                 'direccion'=>'Cristo Redentos, segundo anillo',
                 'gps'=>'-17.77042,-63.18256',
                 'estado'=>true

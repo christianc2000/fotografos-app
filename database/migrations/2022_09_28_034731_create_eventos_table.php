@@ -18,8 +18,7 @@ class CreateEventosTable extends Migration
             $table->string('titulo',30);
             $table->text('descripcion');
             $table->boolean('tipo');//privado=true, publico=false;
-            $table->date('fecha');
-            $table->time('hora');
+            $table->dateTime('fecha');
             $table->string('direccion');
             $table->string('gps');
             $table->boolean('estado');

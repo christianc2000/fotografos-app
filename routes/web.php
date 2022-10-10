@@ -26,6 +26,7 @@ Route::get('/upload-create',[FotografiaController::class,'create'])->middleware(
 
 //*******EVENTO */
 Route::get('/evento',[EventoController::class,'index'])->middleware(['auth'])->name('evento.index');
+Route::post('/evento',[EventoController::class,'store'])->middleware(['auth'])->name('evento.store');
 Route::delete('/evento/{id}',[EventoController::class,'destroy'])->middleware(['auth'])->name('evento.destroy');
 Route::post('/evento-fotografos/{id}',[EventoController::class,'fotografosEvento'])->middleware(['auth'])->name('evento.fotografos');
 //*******FOTOGRAFIA */

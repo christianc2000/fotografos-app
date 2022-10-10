@@ -31,7 +31,7 @@
 
 
 
-        <x-adminlte-modal id="modalCustom" title="Subir Fotografía" size="xl" theme="teal" icon="fas fa-bell"
+        <x-adminlte-modal id="modalCustom" title="Subir Fotografía" size="xl" theme="teal" icon="fa fa-solid fa-upload"
             v-centered static-backdrop scrollable>
             <form action="{{ route('fotografia.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
