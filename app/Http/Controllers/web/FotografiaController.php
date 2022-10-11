@@ -8,7 +8,6 @@ use App\Models\Fotografo;
 use App\Models\Fotografía;
 
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 // import the Intervention Image Manager Class
@@ -43,6 +42,8 @@ class FotografiaController extends Controller
 
         if ($request->hasFile('foto')) {
             //       $uploadedFileUrl = Cloudinary::upload($request->file('foto')->getRealPath())->getSecurePath();
+
+            
             $result = $request->foto->storeOnCloudinary();
             $foto = Fotografía::create([
                 'dimension' => $result->getWidth() . 'x' . $result->getHeight(),
@@ -69,6 +70,8 @@ class FotografiaController extends Controller
                 'fotografía_id' => $foto->id,
                 'evento_id' => $request->evento_id
             ]);
+        
+            
 
             return redirect()->route('fotografia.index');
         } else {

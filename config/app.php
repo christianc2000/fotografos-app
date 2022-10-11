@@ -67,7 +67,7 @@ return [
     |
     */
     'timezone' => 'America/La_Paz',
-  
+
 
     /*
     |--------------------------------------------------------------------------
@@ -163,7 +163,8 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-        /*
+        Aws\Laravel\AwsServiceProvider::class,
+    /*
          * Package Service Providers...
          */
 
@@ -232,6 +233,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Cloudinary' => CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'AWS' => Aws\Laravel\AwsFacade::class,
     ],
 
 ];
