@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\FotoAgua;
 use App\Models\Fotografo;
 use App\Models\Fotografía;
-
+use Aws\Credentials\Credentials;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Aws\Rekognition\RekognitionClient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 // import the Intervention Image Manager Class
@@ -42,8 +43,22 @@ class FotografiaController extends Controller
 
         if ($request->hasFile('foto')) {
             //       $uploadedFileUrl = Cloudinary::upload($request->file('foto')->getRealPath())->getSecurePath();
-
-            
+            $credentials = new Credentials('AKIA4NXRPSDKB6ZCB54Q', '5sHvQTKZR7YqiYzi+VIhFZHq4+u4U+Hx/+ZNtLJJ');
+            $client = new RekognitionClient([
+                'region'    => 'us-east-1',
+                'version'   => 'latest',
+                'credentials' => $credentials,
+            'http' => [ 'verify' => false ]
+            ]);
+   
+            $image = fopen($request->file('foto')->getPathName(), 'r');
+            $byte = fread($image, $request->file('foto')->getSize());
+            $resultado = $client->detectModerationLabels([
+                'Image' => ['Byte' => $byte],
+                'MinConfidence' => 50
+            ]);
+            $resultadoLabels = $resultado->get('ModerationLabels');
+            return dd($resultadoLabels);
             $result = $request->foto->storeOnCloudinary();
             $foto = Fotografía::create([
                 'dimension' => $result->getWidth() . 'x' . $result->getHeight(),
@@ -52,7 +67,7 @@ class FotografiaController extends Controller
                 'publicado' => true,
                 'fotografo_id' => Auth::user()->id,
             ]);
-            
+
             $resultagua = cloudinary()->upload($request->file('foto')->getRealPath(), [
                 'resource_type' => 'image',
                 'transformation' => array(
@@ -63,15 +78,15 @@ class FotografiaController extends Controller
                     )
                 )
             ]);
-           // return $resultagua->getWidth();
+            // return $resultagua->getWidth();
             FotoAgua::create([
                 'dimension' => $resultagua->getWidth() . 'x' . $resultagua->getHeight(),
                 'url' => $resultagua->getPath(),
                 'fotografía_id' => $foto->id,
                 'evento_id' => $request->evento_id
             ]);
-        
-            
+
+
 
             return redirect()->route('fotografia.index');
         } else {
