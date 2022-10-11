@@ -57,7 +57,7 @@ class FotografiaController extends Controller
                 'transformation' => array(
                     array('width' => 200, 'crop' => 'fit', 'effect' => "blur:100"),
                     array(
-                        'overlay' => 'marca-agua-4_ms8m0f', 'width' => 200, 'crop' => "scale",
+                        'overlay' => 'marca-agua-4_gsiizp', 'width' => 200, 'crop' => "scale",
                         'opacity' => 70
                     )
                 )

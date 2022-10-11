@@ -122,9 +122,11 @@
                                     @endif
                                 </td>
                                 <td>
-                              
-                                    <a href="{{route('evento.edit',$ev->id)}}" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Editar">
-                                        <i class="fa fa-lg fa-fw fa-pen"></i>
+                                    <a href="{{route('evento.edit',$ev->id)}}" class="btn btn-xs btn-default text-info mx-1 shadow" title="Editar">
+                                        <i class="fa fas fa-cogs"></i>
+                                    </a>
+                                    <a href="{{route('evento.compartir',$ev->id)}}" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Editar">
+                                        <i class="fa fas fa-share-alt"></i>
                                     </a>
                                     <button class="btn btn-xs btn-default text-danger mx-1 shadow" title="Delete">
                                         <i class="fa fa-lg fa-fw fa-trash"></i>
