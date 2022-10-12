@@ -18,6 +18,10 @@ class Fotografía extends Model
     public function fotoagua(){
         return $this->hasOne(FotoAgua::class);
     }
+    
+    public function coincidencias(){
+        return $this->hasMany(Coincidencia::class);
+    }
     //relación inversa de 1 a muchos
     public function fotografo(){
         return $this->belongsTo(Fotografo::class);

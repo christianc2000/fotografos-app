@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cliente;
+use App\Models\Coincidencia;
 use App\Models\FotoAgua;
 use App\Models\Fotografo;
 use App\Models\Fotografía;
@@ -43,22 +45,20 @@ class FotografiaController extends Controller
 
         if ($request->hasFile('foto')) {
             //       $uploadedFileUrl = Cloudinary::upload($request->file('foto')->getRealPath())->getSecurePath();
-            $credentials = new Credentials('AKIA4NXRPSDKB6ZCB54Q', '5sHvQTKZR7YqiYzi+VIhFZHq4+u4U+Hx/+ZNtLJJ');
             $client = new RekognitionClient([
                 'region'    => 'us-east-1',
                 'version'   => 'latest',
-                'credentials' => $credentials,
-            'http' => [ 'verify' => false ]
             ]);
-   
-            $image = fopen($request->file('foto')->getPathName(), 'r');
-            $byte = fread($image, $request->file('foto')->getSize());
-            $resultado = $client->detectModerationLabels([
-                'Image' => ['Byte' => $byte],
-                'MinConfidence' => 50
-            ]);
-            $resultadoLabels = $resultado->get('ModerationLabels');
-            return dd($resultadoLabels);
+            //foto origen
+            /*            $img = fopen($request->file('foto')->getPathName(), 'r');
+            $byte = fread($img, $request->file('foto')->getSize());
+           
+            //return $img;
+            //foto destino
+            $fotoul = Fotografía::all()->last();
+            $image = fopen($fotoul->url, 'r');
+            $bytes = fread($image, intval(getimagesize($fotoul->url)[0] . getimagesize($fotoul->url)[1]));
+*/
             $result = $request->foto->storeOnCloudinary();
             $foto = Fotografía::create([
                 'dimension' => $result->getWidth() . 'x' . $result->getHeight(),
@@ -67,6 +67,39 @@ class FotografiaController extends Controller
                 'publicado' => true,
                 'fotografo_id' => Auth::user()->id,
             ]);
+            $clientes = Cliente::all();
+            foreach ($clientes as $clien) {
+                $cl = $client->compareFaces([
+                    'QualityFilter' => 'NONE',
+                    'SimilarityThreshold' => 50,
+                    'SourceImage' => [ // REQUIRED
+                        'Bytes' => file_get_contents($clien->url),
+                    ],
+                    'TargetImage' => [ // REQUIRED
+                        'Bytes' => file_get_contents($result->getPath()),
+                    ],
+                ])['FaceMatches'];
+                
+                if (count($cl)>0) {
+                    Coincidencia::create([
+                        'cliente_id' => $clien->id,
+                        'fotografía_id' => $foto->id
+                    ]);
+                }
+            }
+
+            # Check to see if nudity labels were returned
+            // $containsNudity = array_search('Explicit Nudity', array_column($resultado, 'Name'));
+            //  return dd($containsNudity);
+            /*$resultado = $client->detectModerationLabels([
+                'Image' => ['Byte' => $bytes],
+                'MinConfidence' => 50
+            ]);
+            return dd($resultado);
+            $resultadoLabels = $resultado->get('ModerationLabels');
+            return dd($resultadoLabels);*/
+
+
 
             $resultagua = cloudinary()->upload($request->file('foto')->getRealPath(), [
                 'resource_type' => 'image',
